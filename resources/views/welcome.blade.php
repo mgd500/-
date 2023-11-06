@@ -75,7 +75,7 @@
                 <div>
                     <label for="">キーワード
                     <div>
-                        <input type="text" name="keyword" value="{{ $keyword }}">
+                        <input type="text" name="keyword">
                     </div>
                     </label>
                 </div>
