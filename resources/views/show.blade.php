@@ -6,25 +6,26 @@
         <title>Spots</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
-        <h1 class="title">
+        <h1 class="text-2xl">
             {{ $spot->name }}
         </h1>
         @foreach($spot->reviews as $review)
-                <div>{{ $review->comment }}</div>
+                <div class="mb-4">{{ $review->comment }}</div>
         @endforeach
-        <form action="/spots" method="POST">
+        <form action="/spot/review" method="POST">
             @csrf
             <div class="title">
-                <h2>レビュー</h2>
-                <input type="text" name="spot[comment]" placeholder="コメント"/>
+                <h2>レビューを投稿</h2>
+                <input type="text" name="comment" placeholder="コメント"/>
             </div>
-            <input type="hidden" value="{{ $spot->id }}" name="spot[spot_id]"/>
-            <input type="submit" value="投稿"/>
+            <input type="hidden" value="{{ $spot->id }}" name="spot_id"/>
+            <input type="submit" class="text-blue-600" value="投稿"/>
         </form>
         <div class="footer">
-            <a href="/">戻る</a>
+            <a href="/" class="no-underline">戻る</a>
         </div>
     </body>
 </html>

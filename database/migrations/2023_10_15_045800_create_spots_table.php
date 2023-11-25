@@ -20,6 +20,7 @@ class CreateSpotsTable extends Migration
             //$table->foreignId('category2_id')->constrained('categories')->comment('種類ID')->cascadeOnDelete();
             //$table->foreign('price_range_id')->references('id')->on('price_ranges')->comment('料金帯ID')->onDelete('cascade');
             //$table->foreign('category_id')->references('id')->on('categories')->comment('種類ID');
+            $table->foreignId('user_id')->constrained();
         });
     }
 
