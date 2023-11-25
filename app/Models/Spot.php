@@ -23,4 +23,10 @@ class Spot extends Model
     {
         return $this->hasMany(SpotReview::class);
     }
+    protected $fillable = [
+        'name',
+        'category_id',
+        'price_range_id',
+        'user_id'
+    ];
 }

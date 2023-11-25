@@ -8,71 +8,17 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
-        <h1>　WorkSpot　　　　　　　　　　　ワークスペース検索サイト</h1>
         <iframe src="https://www.google.com/maps/d/embed?mid=10_-rDI5XFMmpxuJ4ia9TRmWojmTM84E&ehbc=2E312F&noprof=1" width="1436" height="600"></iframe>
     {{--検索機能ここから --}}
     <div class="search">
         <form action="{{ route('index') }}" method="GET">
             @csrf
 
-            <div class="form-group">
-                <div>
+            <div class="form-group flex flex-row mt-5 space-x-4">
+                <div class="ml-8">
                     <label for="">キーワード
                     <div>
                         <input type="text" name="keyword">
@@ -107,32 +53,84 @@
                 </div>
 
                 <div>
-                    <input type="submit" class="btn" value="検索">
+                    <input type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-6" value="検索">
                 </div>
             </div>
         </form>
     </div>
     {{-- 検索機能ここまで --}}
-
-    <table>
-        <tr>
-            <th>スポット名</th>
-            <th>価格帯</th>
-            <th>施設タイプ</th>
-        </tr>
-
-        @foreach ($items as $item)
-        <tr>
-        
-            <td><a href="/spots/{{ $item->spot_id }}">{{ $item->name }}</a></td>
-            <td>{{ $item->price_range }}</td>
-            <td>{{ $item->category }}</td>
-            {{--price_rangesテーブルとcategoriesテーブルを結合しているので、この記述でアクセスできる--}}
-        </tr>
-
-</script>
-        @endforeach
-        
-    </table>
+<div class="flex">
+    <div class="relative overflow-x-auto shadow-md mt-8 w-[80%]">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <div class="color">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        施設名
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        価格帯
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        施設タイプ
+                    </th>
+                </tr>
+                </div>
+            </thead>
+            @foreach ($items as $item)
+            <tbody>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <a class="text-blue-400 underline" href="/spots/{{ $item->spot_id }}">{{ $item->name }}</a>
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ $item->price_range }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ $item->category }}
+                    </td>
+                    @if(auth()->user())
+                        @if($item->user_id == auth()->id())
+                            <td class="px-6 py-4 text-right">
+                                <form action="/spots/{{ $item->spot_id }}" id="form_{{ $item->spot_id }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="font-medium text-blue-600 dark:text-blue-500 hover:underline" type="button" onclick="deleteSpot({{ $item->spot_id }})">delete</button> 
+                                </form>
+                            </td>
+                        @endif
+                    @endif
+                </tr>
+            </tbody>
+            @endforeach
+        </table>
+    </div>
+<div class="w-[40%] mt-8">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        関連記事
+                    </th>
+                </tr>
+            </thead>
+            @foreach ($posts as $post)
+            <tbody>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td class="px-6 py-4"><a class="text-blue-400 underline" href="/posts/{{ $post->id }}">{{ $post->title }}</a></td>
+                </tr>
+            </tbody>
+            @endforeach
+</div>
+</div>
+    <script>
+        function deleteSpot(id) {
+            'use strict'
+    
+            if (confirm('削除すると復元できません。\n本当に削除しますか？')) {
+                document.getElementById(`form_${id}`).submit();
+            }
+        }
+    </script>
     </body>
 </html>
