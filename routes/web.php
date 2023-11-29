@@ -31,6 +31,7 @@ Route::get('/posts/{post}/edit', [PostController::class, 'edit']);
 Route::put('/posts/{post}', [PostController::class, 'update']);
 Route::delete('/posts/{post}', [PostController::class,'delete']);
 Route::delete('/spots/{spot}', [SpotController::class,'delete'])->middleware('auth');
+Route::delete('/review/{review}', [SpotController::class,'delete_review']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -6,6 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Spots</title>
     <link rel="stylesheet" href="{{ url('css/style.css') }}">
+    <style>
+        body{
+            padding-left: 18px;
+        }
+    </style>
 </head>
 <body>
     <h1 class="title">

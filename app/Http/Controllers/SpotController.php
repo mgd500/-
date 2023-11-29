@@ -104,5 +104,11 @@ class SpotController extends Controller
         $spot->delete();
         return redirect('/');
     }
+    public function delete_review(SpotReview $review)
+    {
+        $spot=$review->spot;
+        $review->delete();
+        return redirect('/spots/' . $spot->id);
+    }
     
 }
